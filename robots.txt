@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Disallow: /netlify/
+Disallow: /functions/
+
+# Sitemap
+Sitemap: https://youtube-shorts-converter.netlify.app/sitemap.xml
+
+# Crawl delay (be nice to servers)
+Crawl-delay: 1
+
+# Preferred host (SEO best practice)
+Host: youtube-shorts-converter.netlify.app
+
+# Allow AI bots (for modern SEO)
+User-agent: ChatGPT
+User-agent: GPTBot
+User-agent: Claude-Web
+Allow: /

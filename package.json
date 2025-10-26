@@ -1,7 +1,7 @@
 {
   "name": "youtube-shorts-converter",
   "version": "2.0.0",
-  "description": "Free YouTube to Shorts video converter with visitor counter and SEO optimization",
+  "description": "Free YouTube to Shorts video converter with visitor counter and SEO optimization - Convert videos to 9:16 vertical format for TikTok, Instagram Reels, YouTube Shorts",
   "main": "index.html",
   "scripts": {
     "build": "echo 'No build process needed'",
