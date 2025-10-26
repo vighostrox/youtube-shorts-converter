@@ -1,9 +1,9 @@
 [build]
   publish = "."
 
-# SEO Optimized Headers
+# XML files should be served as XML
 [[headers]]
-  for = "/sitemap.xml"
+  for = "/*.xml"
   [headers.values]
     Content-Type = "application/xml"
 
@@ -26,22 +26,26 @@
     Cross-Origin-Embedder-Policy = "require-corp"
     Cross-Origin-Opener-Policy = "same-origin"
 
-# Redirects for SEO
+# IMPORTANT: Don't redirect XML files to HTML
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
+  conditions = {Language = [], Country = [], Role = []}
 
-# Sitemap priority
+# Explicitly don't redirect sitemap.xml
 [[redirects]]
-  from = "/sitemap"
+  from = "/sitemap.xml"
   to = "/sitemap.xml"
-  status = 301
+  status = 200
+  force = false
 
 [[redirects]]
-  from = "/sitemap.html"
-  to = "/sitemap.xml"
-  status = 301
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  force = false
 
 [functions]
   directory = "netlify/functions"
