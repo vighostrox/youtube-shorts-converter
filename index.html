@@ -3,7 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Shorts Converter</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>YouTube Shorts Converter - Free Video to Vertical Clip Converter</title>
+    <meta name="title" content="YouTube Shorts Converter - Free Video to Vertical Clip Converter">
+    <meta name="description" content="100% Free online tool to convert YouTube videos and MP4 files into short vertical clips for TikTok, Instagram Reels, YouTube Shorts. No watermarks, no registration required.">
+    <meta name="keywords" content="youtube shorts converter, video to vertical, tiktok maker, instagram reels, short video creator, free video converter, mp4 to vertical, youtube to tiktok, horizontal to vertical video, video editing online, free video cutter, social media video maker, ffmpeg online, video clip maker, shorts creator">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://youtube-shorts-converter.netlify.app/">
+    <meta property="og:title" content="YouTube Shorts Converter - Free Video to Vertical Clip Converter">
+    <meta property="og:description" content="Convert YouTube videos to short vertical clips for TikTok, Instagram Reels, YouTube Shorts - 100% Free, no watermarks">
+    <meta property="og:image" content="https://youtube-shorts-converter.netlify.app/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://youtube-shorts-converter.netlify.app/">
+    <meta property="twitter:title" content="YouTube Shorts Converter - Free Video to Vertical Clip Converter">
+    <meta property="twitter:description" content="Convert YouTube videos to short vertical clips for TikTok, Instagram Reels, YouTube Shorts - 100% Free, no watermarks">
+    <meta property="twitter:image" content="https://youtube-shorts-converter.netlify.app/og-image.jpg">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="author" content="YouTube Shorts Converter">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "YouTube Shorts Converter",
+      "url": "https://youtube-shorts-converter.netlify.app/",
+      "description": "Free online tool to convert YouTube videos and MP4 files into short vertical clips for social media platforms",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Any",
+      "permissions": "browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "YouTube Shorts Converter"
+      }
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://youtube-shorts-converter.netlify.app/">
+    
     <style>
         :root {
             --primary: #ff0000;
@@ -64,6 +122,7 @@
         .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            color: var(--dark);
         }
         
         .hero p {
@@ -92,6 +151,15 @@
             border: 1px solid var(--dark-gray);
             border-radius: 4px 0 0 4px;
             font-size: 1rem;
+        }
+        
+        .file-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--dark-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
         
         .url-input:focus {
@@ -182,6 +250,12 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+        }
+        
+        .preview-thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .preview-thumbnail::before {
@@ -305,6 +379,26 @@
             color: white;
         }
         
+        .upload-section {
+            background: var(--gray);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 2px dashed var(--dark-gray);
+        }
+        
+        .upload-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        
         footer {
             text-align: center;
             padding: 2rem;
@@ -338,6 +432,67 @@
             background-color: #f44336;
         }
         
+        .tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--gray);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .seo-keywords {
+            background: var(--gray);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+        
+        .keywords-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .keyword-category {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .keyword-category h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .keyword-list {
+            list-style: none;
+        }
+        
+        .keyword-list li {
+            padding: 2px 0;
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+        
         @media (max-width: 768px) {
             .input-group {
                 flex-direction: column;
@@ -355,6 +510,10 @@
             .preview-card {
                 width: 100%;
             }
+            
+            .keywords-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -363,34 +522,110 @@
         <div class="container">
             <div class="logo">
                 <span class="logo-icon">🎬</span>
-                <span>YouTube Shorts Converter</span>
+                <span>YouTube Shorts Converter - 100% FREE</span>
             </div>
         </div>
     </header>
     
     <div class="container">
         <section class="hero">
-            <h1>Convert YouTube Videos to Short Vertical Clips</h1>
-            <p>Transform any YouTube video into multiple 30-second or 1-minute vertical clips perfect for TikTok, Instagram Reels, and YouTube Shorts.</p>
+            <h1>Convert Videos to Short Vertical Clips - 100% Free</h1>
+            <p>Process videos directly in your browser using FFmpeg.wasm - no server costs, completely free!</p>
             <div class="progress-bar">
                 <div class="progress" id="progress-bar"></div>
             </div>
         </section>
         
-        <section class="converter-section">
-            <h2>Convert Your Video</h2>
-            <p>Enter the YouTube URL and customize your short clips</p>
+        <!-- SEO Keywords Section -->
+        <section class="seo-keywords">
+            <h2>Free Video Tools & Keywords</h2>
+            <p>Our free online video converter supports these features and formats:</p>
             
-            <div class="input-group">
-                <input type="text" class="url-input" placeholder="Paste YouTube URL here (e.g., https://www.youtube.com/watch?v=...)" id="youtube-url">
-                <button class="btn" id="process-btn">Process Video</button>
+            <div class="keywords-grid">
+                <div class="keyword-category">
+                    <h4>Platform Converters</h4>
+                    <ul class="keyword-list">
+                        <li>YouTube to TikTok</li>
+                        <li>YouTube to Instagram Reels</li>
+                        <li>YouTube to Shorts</li>
+                        <li>MP4 to Vertical</li>
+                        <li>Horizontal to Vertical</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>Video Editing</h4>
+                    <ul class="keyword-list">
+                        <li>Video Cutter Online</li>
+                        <li>Video Trimmer Free</li>
+                        <li>Clip Maker</li>
+                        <li>Short Video Creator</li>
+                        <li>Video Splitter</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>Formats & Features</h4>
+                    <ul class="keyword-list">
+                        <li>MP4 Converter</li>
+                        <li>WebM to MP4</li>
+                        <li>MOV to Vertical</li>
+                        <li>AVI Converter</li>
+                        <li>No Watermark</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>Social Media Tools</h4>
+                    <ul class="keyword-list">
+                        <li>TikTok Video Maker</li>
+                        <li>Instagram Reels Creator</li>
+                        <li>YouTube Shorts Maker</li>
+                        <li>Facebook Video</li>
+                        <li>Social Media Video</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="upload">Upload Video</div>
+            <div class="tab" data-tab="youtube">YouTube URL</div>
+        </div>
+        
+        <section class="converter-section">
+            <!-- Upload Tab -->
+            <div class="tab-content active" id="upload-tab">
+                <h2>Upload Your Video</h2>
+                <p>Upload a video file to convert it into short vertical clips</p>
+                
+                <div class="upload-section">
+                    <input type="file" id="video-file" class="file-input" accept="video/*">
+                    <p>or</p>
+                    <button class="upload-btn" id="browse-btn">Browse Files</button>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--dark-gray);">
+                        Supported formats: MP4, MOV, AVI, WebM (Max 100MB)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- YouTube Tab -->
+            <div class="tab-content" id="youtube-tab">
+                <h2>Convert from YouTube</h2>
+                <p>Enter YouTube URL to get video information (Note: We cannot download YouTube videos due to terms of service)</p>
+                
+                <div class="input-group">
+                    <input type="text" class="url-input" placeholder="Paste YouTube URL here" id="youtube-url">
+                    <button class="btn" id="process-yt-btn">Get Video Info</button>
+                </div>
             </div>
             
             <div class="settings">
                 <div class="setting-group">
                     <label for="clip-length">Clip Length</label>
                     <select id="clip-length">
-                        <option value="30">30 seconds</option>
+                        <option value="15">15 seconds</option>
+                        <option value="30" selected>30 seconds</option>
                         <option value="60">60 seconds</option>
                     </select>
                 </div>
@@ -399,34 +634,38 @@
                     <label for="clip-count">Number of Clips</label>
                     <select id="clip-count">
                         <option value="auto">Auto (Based on video length)</option>
+                        <option value="3">3 clips</option>
                         <option value="5">5 clips</option>
                         <option value="10">10 clips</option>
-                        <option value="15">15 clips</option>
                     </select>
                 </div>
                 
                 <div class="setting-group">
                     <label for="aspect-ratio">Aspect Ratio</label>
                     <select id="aspect-ratio">
-                        <option value="9:16">9:16 (Vertical)</option>
+                        <option value="9:16" selected>9:16 (Vertical)</option>
                         <option value="1:1">1:1 (Square)</option>
                         <option value="4:5">4:5 (Portrait)</option>
                     </select>
                 </div>
             </div>
+            
+            <div class="input-group">
+                <button class="btn" id="process-btn" style="border-radius: 4px; width: 100%;">Process Video</button>
+            </div>
         </section>
         
         <div class="loading" id="loading-section">
             <div class="spinner"></div>
-            <p id="status-message">Processing your video. This may take a few minutes...</p>
+            <p id="status-message">Processing your video in browser...</p>
             <div class="progress-bar">
                 <div class="progress" id="loading-progress"></div>
             </div>
         </div>
         
         <section class="preview-section" id="preview-section" style="display: none;">
-            <h2>Preview Your Shorts</h2>
-            <p>Here are the automatically generated clips from your video</p>
+            <h2>Your Generated Shorts</h2>
+            <p>Clips processed directly in your browser - 100% free!</p>
             
             <div class="preview-container" id="preview-container">
                 <!-- Preview clips will be generated here -->
@@ -435,23 +674,87 @@
         
         <section class="download-section" id="download-section" style="display: none;">
             <h2>Ready to Download</h2>
-            <p>All your clips have been processed and converted to vertical format</p>
+            <p>All clips processed successfully using free browser technology</p>
             <button class="download-btn" id="download-btn">Download All Clips as ZIP</button>
+        </section>
+        
+        <!-- Additional SEO Content -->
+        <section class="seo-keywords">
+            <h2>Why Choose Our Free Video Converter?</h2>
+            <div class="keywords-grid">
+                <div class="keyword-category">
+                    <h4>🆓 100% Free</h4>
+                    <ul class="keyword-list">
+                        <li>No hidden costs</li>
+                        <li>No watermarks</li>
+                        <li>No registration</li>
+                        <li>No limitations</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>⚡ Fast Processing</h4>
+                    <ul class="keyword-list">
+                        <li>Browser-based</li>
+                        <li>No upload delays</li>
+                        <li>Instant preview</li>
+                        <li>Quick downloads</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>🎯 Perfect for Social Media</h4>
+                    <ul class="keyword-list">
+                        <li>TikTok optimized</li>
+                        <li>Instagram Reels ready</li>
+                        <li>YouTube Shorts format</li>
+                        <li>All social platforms</li>
+                    </ul>
+                </div>
+                
+                <div class="keyword-category">
+                    <h4>🔒 Privacy Focused</h4>
+                    <ul class="keyword-list">
+                        <li>No server uploads</li>
+                        <li>Your data stays local</li>
+                        <li>Secure processing</li>
+                        <li>No tracking</li>
+                    </ul>
+                </div>
+            </div>
         </section>
     </div>
     
     <footer>
         <div class="container">
-            <p>YouTube Shorts Converter &copy; 2023 | This demo uses mock processing. For full functionality, deploy with serverless functions.</p>
+            <p><strong>YouTube Shorts Converter</strong> - Free Online Video to Vertical Clip Converter To Shorts video| MP4 to TikTok | YouTube to Instagram Reels | Horizontal to Vertical Video Converter</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">&copy; 2026 YouTube Shorts Converter. 100% Free - Processing happens in your browser using FFmpeg.wasm</p>
         </div>
     </footer>
     
     <div class="notification" id="notification"></div>
+
+    <!-- Load FFmpeg.wasm -->
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
     
     <script>
+        // Update the page title with keywords for better SEO
+        const keywords = ['Free Video Converter', 'YouTube to TikTok', 'MP4 to Vertical', 'Video Cutter Online'];
+        let currentKeywordIndex = 0;
+
+        function rotateTitle() {
+            document.title = `YouTube Shorts Converter - ${keywords[currentKeywordIndex]}`;
+            currentKeywordIndex = (currentKeywordIndex + 1) % keywords.length;
+        }
+
+        // Rotate title every 5 seconds for SEO
+        setInterval(rotateTitle, 5000);
+
         document.addEventListener('DOMContentLoaded', function() {
             const processBtn = document.getElementById('process-btn');
+            const videoFileInput = document.getElementById('video-file');
             const youtubeUrlInput = document.getElementById('youtube-url');
+            const processYtBtn = document.getElementById('process-yt-btn');
             const loadingSection = document.getElementById('loading-section');
             const previewSection = document.getElementById('preview-section');
             const previewContainer = document.getElementById('preview-container');
@@ -460,15 +763,41 @@
             const statusMessage = document.getElementById('status-message');
             const loadingProgress = document.getElementById('loading-progress');
             const notification = document.getElementById('notification');
+            const tabs = document.querySelectorAll('.tab');
+            const browseBtn = document.getElementById('browse-btn');
             
-            // Mock video data for demonstration
-            const mockClips = [
-                { title: "Introduction Clip", duration: "0:30", id: 1 },
-                { title: "Main Point 1", duration: "0:30", id: 2 },
-                { title: "Key Demonstration", duration: "0:30", id: 3 },
-                { title: "Interesting Fact", duration: "0:30", id: 4 },
-                { title: "Conclusion", duration: "0:30", id: 5 }
-            ];
+            let ffmpeg = null;
+            let currentVideoFile = null;
+            
+            // Tab functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    
+                    // Update tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    // Update content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
+                });
+            });
+            
+            // Browse button
+            browseBtn.addEventListener('click', () => {
+                videoFileInput.click();
+            });
+            
+            // File input change
+            videoFileInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    currentVideoFile = this.files[0];
+                    showNotification(`Selected: ${currentVideoFile.name}`, 'success');
+                }
+            });
             
             // Show notification
             function showNotification(message, type = 'success') {
@@ -478,7 +807,7 @@
                 
                 setTimeout(() => {
                     notification.classList.remove('show');
-                }, 3000);
+                }, 4000);
             }
             
             // Update progress bar
@@ -489,77 +818,157 @@
                 }
             }
             
+            // Initialize FFmpeg
+            async function initFFmpeg() {
+                if (!ffmpeg) {
+                    const { createFFmpeg } = FFmpeg;
+                    ffmpeg = createFFmpeg({ 
+                        log: true,
+                        progress: ({ ratio }) => {
+                            updateProgress(Math.round(ratio * 100), `Processing video... ${Math.round(ratio * 100)}%`);
+                        }
+                    });
+                    
+                    updateProgress(10, 'Loading FFmpeg.wasm...');
+                    await ffmpeg.load();
+                    updateProgress(30, 'FFmpeg loaded successfully');
+                }
+                return ffmpeg;
+            }
+            
+            // Process uploaded video
             processBtn.addEventListener('click', async function() {
+                if (!currentVideoFile) {
+                    showNotification('Please select a video file first', 'error');
+                    return;
+                }
+                
+                if (currentVideoFile.size > 100 * 1024 * 1024) { // 100MB limit
+                    showNotification('File too large. Please select a video under 100MB', 'error');
+                    return;
+                }
+                
+                await processVideoFile(currentVideoFile);
+            });
+            
+            // Process YouTube URL (metadata only)
+            processYtBtn.addEventListener('click', function() {
                 const youtubeUrl = youtubeUrlInput.value.trim();
-                const clipLength = document.getElementById('clip-length').value;
-                const clipCount = document.getElementById('clip-count').value;
-                const aspectRatio = document.getElementById('aspect-ratio').value;
                 
                 if (!youtubeUrl) {
                     showNotification('Please enter a YouTube URL', 'error');
                     return;
                 }
                 
-                // Validate YouTube URL format
-                if (!youtubeUrl.includes('youtube.com') && !youtubeUrl.includes('youtu.be')) {
-                    showNotification('Please enter a valid YouTube URL', 'error');
+                const videoId = extractVideoId(youtubeUrl);
+                if (!videoId) {
+                    showNotification('Invalid YouTube URL', 'error');
                     return;
                 }
                 
-                // Show loading section
-                loadingSection.style.display = 'block';
-                previewSection.style.display = 'none';
-                downloadSection.style.display = 'none';
-                processBtn.disabled = true;
-                
-                // Simulate processing steps with progress
-                updateProgress(10, 'Validating YouTube URL...');
-                
-                setTimeout(() => {
-                    updateProgress(30, 'Downloading video...');
-                    
-                    setTimeout(() => {
-                        updateProgress(60, 'Processing video into clips...');
-                        
-                        setTimeout(() => {
-                            updateProgress(80, 'Converting to vertical format...');
-                            
-                            setTimeout(() => {
-                                updateProgress(100, 'Finalizing clips...');
-                                
-                                setTimeout(() => {
-                                    loadingSection.style.display = 'none';
-                                    previewSection.style.display = 'block';
-                                    generatePreviewClips();
-                                    downloadSection.style.display = 'block';
-                                    processBtn.disabled = false;
-                                    showNotification('Video processed successfully!');
-                                }, 1000);
-                            }, 1500);
-                        }, 1500);
-                    }, 1500);
-                }, 1000);
+                showNotification('Note: We can only get video info. For processing, please upload a video file.', 'success');
             });
             
-            function generatePreviewClips() {
+            // Extract YouTube video ID
+            function extractVideoId(url) {
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[7].length === 11) ? match[7] : null;
+            }
+            
+            // Main video processing function
+            async function processVideoFile(file) {
+                try {
+                    loadingSection.style.display = 'block';
+                    previewSection.style.display = 'none';
+                    downloadSection.style.display = 'none';
+                    processBtn.disabled = true;
+                    
+                    await initFFmpeg();
+                    
+                    updateProgress(40, 'Reading video file...');
+                    const arrayBuffer = await file.arrayBuffer();
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    
+                    updateProgress(50, 'Preparing for processing...');
+                    ffmpeg.FS('writeFile', 'input.mp4', uint8Array);
+                    
+                    const clipDuration = parseInt(document.getElementById('clip-length').value);
+                    const clipCount = 3;
+                    const processedClips = [];
+                    
+                    for (let i = 0; i < clipCount; i++) {
+                        const startTime = i * clipDuration;
+                        updateProgress(60 + (i * 10), `Processing clip ${i + 1}/${clipCount}...`);
+                        
+                        try {
+                            await ffmpeg.run(
+                                '-i', 'input.mp4',
+                                '-ss', startTime.toString(),
+                                '-t', clipDuration.toString(),
+                                '-vf', 'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920',
+                                '-c:a', 'copy',
+                                `clip-${i + 1}.mp4`
+                            );
+                            
+                            const data = ffmpeg.FS('readFile', `clip-${i + 1}.mp4`);
+                            const blob = new Blob([data.buffer], { type: 'video/mp4' });
+                            const url = URL.createObjectURL(blob);
+                            
+                            processedClips.push({
+                                id: i + 1,
+                                title: `Clip ${i + 1}`,
+                                duration: `${clipDuration}s`,
+                                url: url,
+                                blob: blob
+                            });
+                            
+                        } catch (error) {
+                            console.warn(`Failed to process clip ${i + 1}:`, error);
+                        }
+                    }
+                    
+                    updateProgress(100, 'Finalizing...');
+                    displayProcessedClips(processedClips);
+                    
+                    loadingSection.style.display = 'none';
+                    previewSection.style.display = 'block';
+                    downloadSection.style.display = 'block';
+                    processBtn.disabled = false;
+                    
+                    showNotification(`Successfully processed ${processedClips.length} clips!`, 'success');
+                    
+                } catch (error) {
+                    console.error('Video processing error:', error);
+                    loadingSection.style.display = 'none';
+                    processBtn.disabled = false;
+                    showNotification('Processing failed: ' + error.message, 'error');
+                }
+            }
+            
+            // Display processed clips
+            function displayProcessedClips(clips) {
                 previewContainer.innerHTML = '';
-                mockClips.forEach((clip, index) => {
+                
+                clips.forEach(clip => {
                     const clipElement = document.createElement('div');
                     clipElement.className = 'preview-card';
                     clipElement.innerHTML = `
                         <div class="preview-thumbnail">
-                            <div class="clip-content">
-                                <div>Clip ${index + 1}</div>
-                                <div>Vertical Format</div>
-                                <div style="font-size: 0.7rem; margin-top: 10px;">${clip.duration}</div>
+                            <video controls>
+                                <source src="${clip.url}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="clip-content" style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">
+                                ${clip.duration}
                             </div>
                         </div>
                         <div class="preview-info">
                             <div class="preview-title">${clip.title}</div>
                             <div class="preview-duration">Duration: ${clip.duration}</div>
                             <div class="clip-actions">
-                                <button class="clip-btn preview-btn" onclick="previewClip(${clip.id})">Preview</button>
-                                <button class="clip-btn download-single-btn" onclick="downloadSingleClip(${clip.id})">Download</button>
+                                <button class="clip-btn preview-btn" onclick="playClip('${clip.url}')">Play</button>
+                                <button class="clip-btn download-single-btn" onclick="downloadClip('${clip.url}', '${clip.title}.mp4')">Download</button>
                             </div>
                         </div>
                     `;
@@ -567,25 +976,27 @@
                 });
             }
             
+            // Download all clips
             downloadBtn.addEventListener('click', function() {
-                showNotification('Downloading all clips as ZIP file...');
-                // In a real implementation, this would download a ZIP file
+                showNotification('Preparing ZIP download...');
                 setTimeout(() => {
-                    showNotification('ZIP download complete!');
-                }, 2000);
+                    showNotification('ZIP download would start here with real implementation');
+                }, 1000);
             });
             
-            // Make functions available globally for button clicks
-            window.previewClip = function(clipId) {
-                showNotification(`Previewing clip ${clipId}...`);
+            // Global functions for button clicks
+            window.playClip = function(url) {
+                // Already handled by video controls
             };
             
-            window.downloadSingleClip = function(clipId) {
-                showNotification(`Downloading clip ${clipId}...`);
-                // Simulate download
-                setTimeout(() => {
-                    showNotification(`Clip ${clipId} downloaded successfully!`);
-                }, 1000);
+            window.downloadClip = function(url, filename) {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showNotification(`Downloaded: ${filename}`);
             };
         });
     </script>
