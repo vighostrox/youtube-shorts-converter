@@ -1,0 +1,12 @@
+{
+  "name": "youtube-shorts-converter",
+  "version": "1.0.0",
+  "description": "Convert YouTube videos to short vertical clips",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build process needed'"
+  },
+  "keywords": ["youtube", "video", "converter", "shorts"],
+  "author": "Your Name",
+  "license": "MIT"
+}
