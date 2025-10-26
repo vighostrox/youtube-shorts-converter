@@ -688,337 +688,352 @@
     
     <script>
         // Update the page title with keywords for better SEO
-        const keywords = ['Free Video Converter', 'YouTube to TikTok', 'MP4 to Vertical', 'Video Cutter Online', 'Youtube Shorts Video Downloader'];
-        let currentKeywordIndex = 0;
+const keywords = ['Free Video Converter', 'YouTube to TikTok', 'MP4 to Vertical', 'Video Cutter Online'];
+let currentKeywordIndex = 0;
 
-        function rotateTitle() {
-            document.title = `YouTube Shorts Converter - ${keywords[currentKeywordIndex]}`;
-            currentKeywordIndex = (currentKeywordIndex + 1) % keywords.length;
-        }
+function rotateTitle() {
+    document.title = `YouTube Shorts Converter - ${keywords[currentKeywordIndex]}`;
+    currentKeywordIndex = (currentKeywordIndex + 1) % keywords.length;
+}
 
-        // Rotate title every 5 seconds for SEO
-        setInterval(rotateTitle, 5000);
+// Rotate title every 5 seconds for SEO
+setInterval(rotateTitle, 5000);
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const processBtn = document.getElementById('process-btn');
-            const videoFileInput = document.getElementById('video-file');
-            const youtubeUrlInput = document.getElementById('youtube-url');
-            const processYtBtn = document.getElementById('process-yt-btn');
-            const loadingSection = document.getElementById('loading-section');
-            const previewSection = document.getElementById('preview-section');
-            const previewContainer = document.getElementById('preview-container');
-            const downloadSection = document.getElementById('download-section');
-            const downloadBtn = document.getElementById('download-btn');
-            const statusMessage = document.getElementById('status-message');
-            const loadingProgress = document.getElementById('loading-progress');
-            const notification = document.getElementById('notification');
-            const tabs = document.querySelectorAll('.tab');
-            const browseBtn = document.getElementById('browse-btn');
+document.addEventListener('DOMContentLoaded', function() {
+    const processBtn = document.getElementById('process-btn');
+    const videoFileInput = document.getElementById('video-file');
+    const youtubeUrlInput = document.getElementById('youtube-url');
+    const processYtBtn = document.getElementById('process-yt-btn');
+    const loadingSection = document.getElementById('loading-section');
+    const previewSection = document.getElementById('preview-section');
+    const previewContainer = document.getElementById('preview-container');
+    const downloadSection = document.getElementById('download-section');
+    const downloadBtn = document.getElementById('download-btn');
+    const statusMessage = document.getElementById('status-message');
+    const loadingProgress = document.getElementById('loading-progress');
+    const notification = document.getElementById('notification');
+    const tabs = document.querySelectorAll('.tab');
+    const browseBtn = document.getElementById('browse-btn');
+    
+    let ffmpeg = null;
+    let isFFmpegLoading = false;
+    let isFFmpegLoaded = false;
+    let currentVideoFile = null;
+    
+    // Tab functionality
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.getAttribute('data-tab');
             
-            let ffmpeg = null;
-            let isFFmpegLoading = false;
-            let isFFmpegLoaded = false;
-            let currentVideoFile = null;
+            // Update tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
             
-            // Tab functionality
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabName = tab.getAttribute('data-tab');
-                    
-                    // Update tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    
-                    // Update content
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    document.getElementById(`${tabName}-tab`).classList.add('active');
-                });
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
             });
-            
-            // Browse button
-            browseBtn.addEventListener('click', () => {
-                videoFileInput.click();
-            });
-            
-            // File input change
-            videoFileInput.addEventListener('change', function(e) {
-                if (this.files && this.files[0]) {
-                    currentVideoFile = this.files[0];
-                    showNotification(`Selected: ${currentVideoFile.name}`, 'success');
-                }
-            });
-            
-            // Show notification
-            function showNotification(message, type = 'success') {
-                notification.textContent = message;
-                notification.className = `notification ${type}`;
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 4000);
-            }
-            
-            // Update progress bar
-            function updateProgress(percent, message) {
-                loadingProgress.style.width = `${percent}%`;
-                if (message) {
-                    statusMessage.textContent = message;
-                }
-            }
-            
-            // Fixed FFmpeg initialization with proper loading check
-            async function initFFmpeg() {
-                if (isFFmpegLoaded && ffmpeg) {
-                    return ffmpeg;
-                }
-                
-                if (isFFmpegLoading) {
-                    // Wait for existing load to complete
-                    while (isFFmpegLoading) {
-                        await new Promise(resolve => setTimeout(resolve, 100));
-                    }
-                    return ffmpeg;
-                }
-                
-                isFFmpegLoading = true;
-                
-                try {
-                    const { createFFmpeg } = FFmpeg;
-                    ffmpeg = createFFmpeg({ 
-                        log: true,
-                        corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
-                        progress: ({ ratio }) => {
-                            const progress = Math.round(ratio * 100);
-                            updateProgress(progress, `Loading FFmpeg... ${progress}%`);
-                        }
-                    });
-                    
-                    updateProgress(10, 'Loading FFmpeg.wasm...');
-                    await ffmpeg.load();
-                    
-                    isFFmpegLoaded = true;
-                    isFFmpegLoading = false;
-                    
-                    updateProgress(100, 'FFmpeg loaded successfully!');
-                    showNotification('FFmpeg loaded and ready for processing!', 'success');
-                    
-                    return ffmpeg;
-                    
-                } catch (error) {
-                    isFFmpegLoading = false;
-                    console.error('FFmpeg load error:', error);
-                    throw new Error(`FFmpeg failed to load: ${error.message}`);
-                }
-            }
-            
-            // Pre-load FFmpeg when page loads
-            async function preloadFFmpeg() {
-                try {
-                    await initFFmpeg();
-                    console.log('FFmpeg pre-loaded successfully');
-                } catch (error) {
-                    console.log('FFmpeg pre-load failed, will load on demand:', error.message);
-                }
-            }
-            
-            // Start pre-loading FFmpeg
-            preloadFFmpeg();
-            
-            // Process uploaded video
-            processBtn.addEventListener('click', async function() {
-                if (!currentVideoFile) {
-                    showNotification('Please select a video file first', 'error');
-                    return;
-                }
-                
-                if (currentVideoFile.size > 100 * 1024 * 1024) {
-                    showNotification('File too large. Please select a video under 100MB', 'error');
-                    return;
-                }
-                
-                await processVideoFile(currentVideoFile);
-            });
-            
-            // Process YouTube URL (metadata only)
-            processYtBtn.addEventListener('click', function() {
-                const youtubeUrl = youtubeUrlInput.value.trim();
-                
-                if (!youtubeUrl) {
-                    showNotification('Please enter a YouTube URL', 'error');
-                    return;
-                }
-                
-                const videoId = extractVideoId(youtubeUrl);
-                if (!videoId) {
-                    showNotification('Invalid YouTube URL', 'error');
-                    return;
-                }
-                
-                showNotification('Note: We can only get video info. For processing, please upload a video file.', 'success');
-            });
-            
-            // Extract YouTube video ID
-            function extractVideoId(url) {
-                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[7].length === 11) ? match[7] : null;
-            }
-            
-            // Main video processing function
-            async function processVideoFile(file) {
-                try {
-                    loadingSection.style.display = 'block';
-                    previewSection.style.display = 'none';
-                    downloadSection.style.display = 'none';
-                    processBtn.disabled = true;
-                    
-                    updateProgress(0, 'Initializing video processor...');
-                    
-                    // Ensure FFmpeg is loaded
-                    const ffmpegInstance = await initFFmpeg();
-                    
-                    if (!ffmpegInstance) {
-                        throw new Error('FFmpeg failed to initialize');
-                    }
-                    
-                    // Check if FFmpeg is ready
-                    if (!ffmpegInstance.isLoaded()) {
-                        throw new Error('FFmpeg is not ready. Please try again.');
-                    }
-                    
-                    updateProgress(20, 'Reading video file...');
-                    const arrayBuffer = await file.arrayBuffer();
-                    const uint8Array = new Uint8Array(arrayBuffer);
-                    
-                    updateProgress(40, 'Preparing for processing...');
-                    ffmpegInstance.FS('writeFile', 'input.mp4', uint8Array);
-                    
-                    const clipDuration = parseInt(document.getElementById('clip-length').value);
-                    const clipCount = 3;
-                    const processedClips = [];
-                    
-                    for (let i = 0; i < clipCount; i++) {
-                        const startTime = i * clipDuration;
-                        const progress = 40 + (i * 15);
-                        updateProgress(progress, `Processing clip ${i + 1}/${clipCount}...`);
-                        
-                        try {
-                            // Simple conversion without complex filters
-                            await ffmpegInstance.run(
-                                '-i', 'input.mp4',
-                                '-ss', startTime.toString(),
-                                '-t', clipDuration.toString(),
-                                '-vf', 'scale=720:1280',
-                                '-c:a', 'aac',
-                                `clip-${i + 1}.mp4`
-                            );
-                            
-                            const data = ffmpegInstance.FS('readFile', `clip-${i + 1}.mp4`);
-                            
-                            if (data.length === 0) {
-                                throw new Error('Empty clip generated');
-                            }
-                            
-                            const blob = new Blob([data.buffer], { type: 'video/mp4' });
-                            const url = URL.createObjectURL(blob);
-                            
-                            processedClips.push({
-                                id: i + 1,
-                                title: `Clip ${i + 1}`,
-                                duration: `${clipDuration}s`,
-                                url: url,
-                                blob: blob
-                            });
-                            
-                        } catch (error) {
-                            console.warn(`Failed to process clip ${i + 1}:`, error);
-                            // Continue with other clips
-                        }
-                    }
-                    
-                    if (processedClips.length === 0) {
-                        throw new Error('No clips were successfully processed');
-                    }
-                    
-                    updateProgress(100, 'Finalizing clips...');
-                    displayProcessedClips(processedClips);
-                    
-                    loadingSection.style.display = 'none';
-                    previewSection.style.display = 'block';
-                    downloadSection.style.display = 'block';
-                    processBtn.disabled = false;
-                    
-                    showNotification(`Successfully processed ${processedClips.length} clips!`, 'success');
-                    
-                } catch (error) {
-                    console.error('Video processing error:', error);
-                    loadingSection.style.display = 'none';
-                    processBtn.disabled = false;
-                    
-                    if (error.message.includes('not ready') || error.message.includes('load')) {
-                        showNotification('Video processor is still loading. Please wait a moment and try again.', 'error');
-                    } else {
-                        showNotification('Processing failed: ' + error.message, 'error');
-                    }
-                }
-            }
-            
-            // Display processed clips
-            function displayProcessedClips(clips) {
-                previewContainer.innerHTML = '';
-                
-                clips.forEach(clip => {
-                    const clipElement = document.createElement('div');
-                    clipElement.className = 'preview-card';
-                    clipElement.innerHTML = `
-                        <div class="preview-thumbnail">
-                            <video controls>
-                                <source src="${clip.url}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="clip-content" style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px;">
-                                ${clip.duration}
-                            </div>
-                        </div>
-                        <div class="preview-info">
-                            <div class="preview-title">${clip.title}</div>
-                            <div class="preview-duration">Duration: ${clip.duration}</div>
-                            <div class="clip-actions">
-                                <button class="clip-btn preview-btn" onclick="playClip('${clip.url}')">Play</button>
-                                <button class="clip-btn download-single-btn" onclick="downloadClip('${clip.url}', '${clip.title}.mp4')">Download</button>
-                            </div>
-                        </div>
-                    `;
-                    previewContainer.appendChild(clipElement);
-                });
-            }
-            
-            // Download all clips
-            downloadBtn.addEventListener('click', function() {
-                showNotification('Preparing ZIP download...');
-                setTimeout(() => {
-                    showNotification('ZIP download would start here with real implementation');
-                }, 1000);
-            });
-            
-            // Global functions for button clicks
-            window.playClip = function(url) {
-                // Already handled by video controls
-            };
-            
-            window.downloadClip = function(url, filename) {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                showNotification(`Downloaded: ${filename}`);
-            };
+            document.getElementById(`${tabName}-tab`).classList.add('active');
         });
+    });
+    
+    // Browse button
+    browseBtn.addEventListener('click', () => {
+        videoFileInput.click();
+    });
+    
+    // File input change
+    videoFileInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            currentVideoFile = this.files[0];
+            showNotification(`Selected: ${currentVideoFile.name}`, 'success');
+        }
+    });
+    
+    // Show notification
+    function showNotification(message, type = 'success') {
+        notification.textContent = message;
+        notification.className = `notification ${type}`;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 4000);
+    }
+    
+    // Update progress bar
+    function updateProgress(percent, message) {
+        loadingProgress.style.width = `${percent}%`;
+        if (message) {
+            statusMessage.textContent = message;
+        }
+    }
+    
+    // Fixed FFmpeg initialization with proper loading check
+    async function initFFmpeg() {
+        if (isFFmpegLoaded && ffmpeg) {
+            return ffmpeg;
+        }
+        
+        if (isFFmpegLoading) {
+            // Wait for existing load to complete
+            while (isFFmpegLoading) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            return ffmpeg;
+        }
+        
+        isFFmpegLoading = true;
+        
+        try {
+            const { createFFmpeg } = FFmpeg;
+            ffmpeg = createFFmpeg({ 
+                log: false,
+                progress: ({ ratio }) => {
+                    const progress = Math.round(ratio * 100);
+                    updateProgress(progress, `Loading FFmpeg... ${progress}%`);
+                }
+            });
+            
+            updateProgress(10, 'Loading FFmpeg.wasm...');
+            await ffmpeg.load();
+            
+            isFFmpegLoaded = true;
+            isFFmpegLoading = false;
+            
+            updateProgress(100, 'FFmpeg loaded successfully!');
+            
+            return ffmpeg;
+            
+        } catch (error) {
+            isFFmpegLoading = false;
+            console.error('FFmpeg load error:', error);
+            throw new Error(`FFmpeg failed to load: ${error.message}`);
+        }
+    }
+    
+    // Pre-load FFmpeg when page loads
+    async function preloadFFmpeg() {
+        try {
+            await initFFmpeg();
+            console.log('FFmpeg pre-loaded successfully');
+        } catch (error) {
+            console.log('FFmpeg pre-load failed, will load on demand:', error.message);
+        }
+    }
+    
+    // Start pre-loading FFmpeg
+    preloadFFmpeg();
+    
+    // Process uploaded video
+    processBtn.addEventListener('click', async function() {
+        if (!currentVideoFile) {
+            showNotification('Please select a video file first', 'error');
+            return;
+        }
+        
+        if (currentVideoFile.size > 100 * 1024 * 1024) {
+            showNotification('File too large. Please select a video under 100MB', 'error');
+            return;
+        }
+        
+        await processVideoFile(currentVideoFile);
+    });
+    
+    // Process YouTube URL (metadata only)
+    processYtBtn.addEventListener('click', function() {
+        const youtubeUrl = youtubeUrlInput.value.trim();
+        
+        if (!youtubeUrl) {
+            showNotification('Please enter a YouTube URL', 'error');
+            return;
+        }
+        
+        const videoId = extractVideoId(youtubeUrl);
+        if (!videoId) {
+            showNotification('Invalid YouTube URL', 'error');
+            return;
+        }
+        
+        showNotification('Note: We can only get video info. For processing, please upload a video file.', 'success');
+    });
+    
+    // Extract YouTube video ID
+    function extractVideoId(url) {
+        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[7].length === 11) ? match[7] : null;
+    }
+    
+    // FIXED: Main video processing function with proper vertical conversion
+    async function processVideoFile(file) {
+        try {
+            loadingSection.style.display = 'block';
+            previewSection.style.display = 'none';
+            downloadSection.style.display = 'none';
+            processBtn.disabled = true;
+            
+            updateProgress(0, 'Initializing video processor...');
+            
+            // Ensure FFmpeg is loaded
+            const ffmpegInstance = await initFFmpeg();
+            
+            if (!ffmpegInstance) {
+                throw new Error('FFmpeg failed to initialize');
+            }
+            
+            updateProgress(20, 'Reading video file...');
+            const arrayBuffer = await file.arrayBuffer();
+            const uint8Array = new Uint8Array(arrayBuffer);
+            
+            updateProgress(40, 'Preparing for processing...');
+            ffmpegInstance.FS('writeFile', 'input.mp4', uint8Array);
+            
+            const clipDuration = parseInt(document.getElementById('clip-length').value);
+            const aspectRatio = document.getElementById('aspect-ratio').value;
+            const clipCount = 3;
+            const processedClips = [];
+            
+            // FIXED: Proper aspect ratio conversion settings
+            let scaleFilter;
+            switch (aspectRatio) {
+                case '9:16':
+                    // True vertical 9:16 - 1080x1920
+                    scaleFilter = 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black';
+                    break;
+                case '1:1':
+                    // Square 1:1 - 1080x1080
+                    scaleFilter = 'scale=1080:1080:force_original_aspect_ratio=decrease,pad=1080:1080:(ow-iw)/2:(oh-ih)/2:black';
+                    break;
+                case '4:5':
+                    // Portrait 4:5 - 864x1080
+                    scaleFilter = 'scale=864:1080:force_original_aspect_ratio=decrease,pad=864:1080:(ow-iw)/2:(oh-ih)/2:black';
+                    break;
+                default:
+                    scaleFilter = 'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:black';
+            }
+            
+            for (let i = 0; i < clipCount; i++) {
+                const startTime = i * clipDuration;
+                const progress = 40 + (i * 15);
+                updateProgress(progress, `Converting clip ${i + 1} to ${aspectRatio}...`);
+                
+                try {
+                    // FIXED: Simple and reliable FFmpeg command for vertical conversion
+                    await ffmpegInstance.run(
+                        '-i', 'input.mp4',
+                        '-ss', startTime.toString(),
+                        '-t', clipDuration.toString(),
+                        '-vf', scaleFilter,
+                        '-c:v', 'libx264',
+                        '-c:a', 'aac',
+                        `clip-${i + 1}.mp4`
+                    );
+                    
+                    const data = ffmpegInstance.FS('readFile', `clip-${i + 1}.mp4`);
+                    
+                    if (data.length === 0) {
+                        throw new Error('Empty clip generated');
+                    }
+                    
+                    const blob = new Blob([data.buffer], { type: 'video/mp4' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    processedClips.push({
+                        id: i + 1,
+                        title: `Clip ${i + 1}`,
+                        duration: `${clipDuration}s`,
+                        aspect: aspectRatio,
+                        url: url,
+                        blob: blob
+                    });
+                    
+                } catch (error) {
+                    console.warn(`Failed to process clip ${i + 1}:`, error);
+                    // Continue with other clips
+                }
+            }
+            
+            if (processedClips.length === 0) {
+                throw new Error('No clips were successfully processed');
+            }
+            
+            updateProgress(100, 'Finalizing clips...');
+            displayProcessedClips(processedClips);
+            
+            loadingSection.style.display = 'none';
+            previewSection.style.display = 'block';
+            downloadSection.style.display = 'block';
+            processBtn.disabled = false;
+            
+            showNotification(`✅ Success! Converted ${processedClips.length} clips to ${aspectRatio}`, 'success');
+            
+        } catch (error) {
+            console.error('Video processing error:', error);
+            loadingSection.style.display = 'none';
+            processBtn.disabled = false;
+            
+            if (error.message.includes('not ready') || error.message.includes('load')) {
+                showNotification('Video processor is still loading. Please wait a moment and try again.', 'error');
+            } else {
+                showNotification('Processing failed: ' + error.message, 'error');
+            }
+        }
+    }
+    
+    // Display processed clips
+    function displayProcessedClips(clips) {
+        previewContainer.innerHTML = '';
+        
+        clips.forEach(clip => {
+            const clipElement = document.createElement('div');
+            clipElement.className = 'preview-card';
+            clipElement.innerHTML = `
+                <div class="preview-thumbnail">
+                    <video controls style="width: 100%; height: 100%; object-fit: cover;">
+                        <source src="${clip.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="clip-content" style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 5px; border-radius: 3px; color: white; font-size: 12px;">
+                        ${clip.aspect} • ${clip.duration}
+                    </div>
+                </div>
+                <div class="preview-info">
+                    <div class="preview-title">${clip.title}</div>
+                    <div class="preview-duration">${clip.aspect} • ${clip.duration}</div>
+                    <div class="clip-actions">
+                        <button class="clip-btn preview-btn" onclick="playClip('${clip.url}')">Play</button>
+                        <button class="clip-btn download-single-btn" onclick="downloadClip('${clip.url}', 'clip-${clip.id}-${clip.aspect.replace(':', 'x')}.mp4')">Download</button>
+                    </div>
+                </div>
+            `;
+            previewContainer.appendChild(clipElement);
+        });
+    }
+    
+    // Download all clips
+    downloadBtn.addEventListener('click', function() {
+        showNotification('Preparing ZIP download...');
+        setTimeout(() => {
+            showNotification('ZIP download would start here with real implementation');
+        }, 1000);
+    });
+    
+    // Global functions for button clicks
+    window.playClip = function(url) {
+        // Already handled by video controls
+    };
+    
+    window.downloadClip = function(url, filename) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showNotification(`✅ Downloaded: ${filename}`);
+    };
+});
     </script>
 </body>
 </html>
